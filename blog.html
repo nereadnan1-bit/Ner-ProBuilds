@@ -106,8 +106,8 @@
     // ============================================================
     // CONFIGURATION - Replace with your details
     // ============================================================
-    const GITHUB_USER = 'YOUR_GITHUB_USERNAME';   // e.g., 'johnsmith'
-    const GITHUB_REPO = 'YOUR_REPO_NAME';         // e.g., 'my-business-site'
+    const GITHUB_USER = 'nereadnan1-bit';   // e.g., 'johnsmith'
+    const GITHUB_REPO = 'Ner-ProBuilds.git';         // e.g., 'my-business-site'
     // Optional: Add a token ONLY if repo is private or you hit rate limits
     const GITHUB_TOKEN = ''; // Leave empty for public repo (60 req/hr limit)
     const BLOG_PATH = 'content/blog';
@@ -196,7 +196,7 @@
         const headers = { 'Accept': 'application/vnd.github.v3+json' };
         if (GITHUB_TOKEN) headers['Authorization'] = `token ${GITHUB_TOKEN}`;
         
-        const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${BLOG_PATH}`;
+        const apiUrl = `https://api.github.com/repos/${nereadnan1-bit}/${Ner-ProBuilds.git}/contents/${BLOG_PATH}`;
         console.log('Fetching:', apiUrl);
         
         const resp = await fetch(apiUrl, { headers });
