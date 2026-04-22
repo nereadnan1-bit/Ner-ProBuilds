@@ -1,0 +1,19 @@
+/* Custom styles to complement Bootstrap */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main {
+  flex: 1;
+}
+footer a {
+  text-decoration: none;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home | My Professional Site</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- Netlify Identity Widget -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <!-- Navigation Bar (reused across all pages) -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">MyBusiness</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+          <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="academics.html">Academics</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="monetization.html">Monetization</a></li>
+        </ul>
+        <form class="d-flex me-2" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search site..." aria-label="Search">
+          <button class="btn btn-outline-light" type="submit">Search</button>
+        </form>
+        <div class="d-flex">
+          <button class="btn btn-outline-light me-2" id="loginBtn">Login</button>
+          <button class="btn btn-primary" id="registerBtn">Register</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="bg-primary text-white text-center py-5">
+    <div class="container">
+      <h1 class="display-4 fw-bold">Professional IT Solutions</h1>
+      <p class="lead">CompTIA A+ Certified | Expert Troubleshooting & Support</p>
+      <a href="services.html" class="btn btn-light btn-lg mt-3">View Services</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container my-5">
+    <div class="row">
+      <div class="col-md-8">
+        <h2>Welcome to My Professional Site</h2>
+        <p class="lead">I provide top-tier IT support, consulting, and managed services for individuals and small businesses.</p>
+        <p>With a CompTIA A+ certification and years of hands-on experience, I can help you with hardware troubleshooting, network setup, data recovery, and more. Explore my services, check out past projects, or read my latest blog posts.</p>
+        <a href="about.html" class="btn btn-outline-primary">Learn More About Me</a>
+      </div>
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Quick Contact</h5>
+            <p>Email: hello@mybusiness.com</p>
+            <p>Phone: (555) 123-4567</p>
+            <div class="d-grid gap-2">
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contactModal">Send a Message</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white pt-4 pb-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h5>MyBusiness</h5>
+          <p>Professional IT services you can trust.</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="blog.html" class="text-white-50">Blog</a></li>
+            <li><a href="services.html" class="text-white-50">Services</a></li>
+            <li><a href="projects.html" class="text-white-50">Projects</a></li>
+            <li><a href="academics.html" class="text-white-50">Academics</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5>Connect</h5>
+          <div class="d-flex gap-3">
+            <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-telegram"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-whatsapp"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-reddit"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-discord"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-github"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <hr class="bg-secondary">
+      <p class="text-center mb-0">&copy; 2026 MyBusiness. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom JS -->
+  <script src="js/main.js"></script>
+  <script>
+    // Netlify Identity redirect and widget handling
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+    // Login/Register buttons trigger Netlify Identity modal
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      window.netlifyIdentity.open('login');
+    });
+    document.getElementById('registerBtn').addEventListener('click', () => {
+      window.netlifyIdentity.open('signup');
+    });
+  </script>
+</body>
+</html>
