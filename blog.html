@@ -1,3 +1,271 @@
-<!-- After Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="js/blog.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | My Professional Site</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- Netlify Identity Widget (for login) -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <!-- Navigation Bar (identical to other pages) -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">MyBusiness</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="blog.html">Blog</a></li>
+          <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="academics.html">Academics</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="monetization.html">Monetization</a></li>
+        </ul>
+        <form class="d-flex me-2" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search site...">
+          <button class="btn btn-outline-light" type="submit">Search</button>
+        </form>
+        <div class="d-flex">
+          <button class="btn btn-outline-light me-2" id="loginBtn">Login</button>
+          <button class="btn btn-primary" id="registerBtn">Register</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container my-5">
+    <h1 class="mb-4">Blog</h1>
+    <p class="lead">Latest articles, tutorials, and tech insights.</p>
+    
+    <!-- This is where blog posts will be injected -->
+    <div id="blog-posts-container">
+      <div class="text-center my-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading blog posts...</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white pt-4 pb-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h5>MyBusiness</h5>
+          <p>Professional IT services you can trust.</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="blog.html" class="text-white-50">Blog</a></li>
+            <li><a href="services.html" class="text-white-50">Services</a></li>
+            <li><a href="projects.html" class="text-white-50">Projects</a></li>
+            <li><a href="academics.html" class="text-white-50">Academics</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5>Connect</h5>
+          <div class="d-flex gap-3">
+            <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-telegram"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-whatsapp"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-reddit"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-discord"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-github"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <hr class="bg-secondary">
+      <p class="text-center mb-0">&copy; 2026 MyBusiness. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Marked library for Markdown rendering (optional but useful) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  
+  <!-- Shared main.js -->
+  <script src="js/main.js"></script>
+  
+  <!-- Blog specific JavaScript (simplified with fallback) -->
+  <script>
+    // ============================================================
+    // CONFIGURATION - Replace with your details
+    // ============================================================
+    const GITHUB_USER = 'YOUR_GITHUB_USERNAME';   // e.g., 'johnsmith'
+    const GITHUB_REPO = 'YOUR_REPO_NAME';         // e.g., 'my-business-site'
+    // Optional: Add a token ONLY if repo is private or you hit rate limits
+    const GITHUB_TOKEN = ''; // Leave empty for public repo (60 req/hr limit)
+    const BLOG_PATH = 'content/blog';
+    
+    // Helper to parse frontmatter from Markdown
+    function parseFrontmatter(md) {
+      const match = md.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/);
+      if (!match) return { title: 'Untitled', date: new Date().toISOString(), body: md };
+      const fm = match[1];
+      const body = match[2];
+      const data = {};
+      fm.split('\n').forEach(line => {
+        const idx = line.indexOf(':');
+        if (idx > 0) {
+          const key = line.slice(0, idx).trim();
+          const val = line.slice(idx+1).trim();
+          data[key] = val;
+        }
+      });
+      return { ...data, body };
+    }
+    
+    // Render posts to page
+    function renderPosts(posts) {
+      const container = document.getElementById('blog-posts-container');
+      if (!posts.length) {
+        container.innerHTML = `
+          <div class="alert alert-info">
+            <h4>No blog posts yet.</h4>
+            <p>Visit the <a href="/admin/" target="_blank">admin panel</a> to create your first post!</p>
+          </div>
+        `;
+        return;
+      }
+      
+      let html = '<div class="row">';
+      posts.forEach(post => {
+        const excerpt = (post.body || '').replace(/[#*`]/g, '').substring(0, 200) + '...';
+        const img = post.thumbnail || 'https://via.placeholder.com/600x400?text=Blog+Image';
+        const date = post.date ? new Date(post.date).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }) : '';
+        
+        html += `
+          <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+              <img src="${img}" class="card-img-top" alt="${post.title}" style="height:200px; object-fit:cover;">
+              <div class="card-body">
+                <h5 class="card-title">${post.title || 'Untitled'}</h5>
+                ${date ? `<p class="text-muted small">${date}</p>` : ''}
+                <p class="card-text">${excerpt}</p>
+                <button class="btn btn-outline-primary read-more" data-slug="${post.slug}">Read More</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      container.innerHTML = html;
+      
+      document.querySelectorAll('.read-more').forEach(btn => {
+        btn.addEventListener('click', () => {
+          alert('Full post view not implemented. Slug: ' + btn.dataset.slug);
+        });
+      });
+    }
+    
+    // Fallback demo posts in case GitHub fails (for testing)
+    function showDemoPosts() {
+      const demoPosts = [
+        {
+          title: 'Sample Blog Post',
+          date: new Date().toISOString(),
+          thumbnail: 'https://via.placeholder.com/600x400?text=Sample+Post',
+          body: 'This is a sample post. Once you configure GitHub and create real content, your posts will appear here.',
+          slug: 'sample-post'
+        }
+      ];
+      renderPosts(demoPosts);
+      console.warn('Showing demo posts because GitHub fetch failed. Check configuration.');
+    }
+    
+    // Fetch from GitHub
+    async function fetchBlogPosts() {
+      const container = document.getElementById('blog-posts-container');
+      
+      try {
+        const headers = { 'Accept': 'application/vnd.github.v3+json' };
+        if (GITHUB_TOKEN) headers['Authorization'] = `token ${GITHUB_TOKEN}`;
+        
+        const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${BLOG_PATH}`;
+        console.log('Fetching:', apiUrl);
+        
+        const resp = await fetch(apiUrl, { headers });
+        if (!resp.ok) {
+          if (resp.status === 404) throw new Error('Blog folder not found. Create a post via CMS first.');
+          if (resp.status === 403) throw new Error('API rate limit exceeded or bad token.');
+          throw new Error(`GitHub API error ${resp.status}`);
+        }
+        
+        const files = await resp.json();
+        const mdFiles = files.filter(f => f.name.endsWith('.md'));
+        
+        if (mdFiles.length === 0) {
+          renderPosts([]);
+          return;
+        }
+        
+        const posts = [];
+        for (const file of mdFiles) {
+          const contentResp = await fetch(file.download_url, { headers });
+          const content = await contentResp.text();
+          const post = parseFrontmatter(content);
+          post.slug = file.name.replace('.md', '');
+          posts.push(post);
+        }
+        
+        posts.sort((a,b) => new Date(b.date) - new Date(a.date));
+        renderPosts(posts);
+        
+      } catch (error) {
+        console.error('Blog fetch error:', error);
+        container.innerHTML = `
+          <div class="alert alert-warning">
+            <h4>Could not load blog posts</h4>
+            <p><strong>Error:</strong> ${error.message}</p>
+            <p>This might be because:</p>
+            <ul>
+              <li>You haven't created any blog posts in the CMS yet.</li>
+              <li>The GitHub username or repo name in blog.html is incorrect.</li>
+              <li>GitHub API rate limit (60/hr). Add a token or wait.</li>
+            </ul>
+            <hr>
+            <p>For now, here is a demo post to show the layout:</p>
+            <button class="btn btn-sm btn-outline-primary" onclick="showDemoPosts()">Show Demo Post</button>
+          </div>
+        `;
+        // Optionally, automatically show demo if you prefer:
+        // showDemoPosts();
+      }
+    }
+    
+    // Expose showDemoPosts to global for the button onclick
+    window.showDemoPosts = showDemoPosts;
+    
+    // Start fetching
+    fetchBlogPosts();
+  </script>
+  
+  <!-- Netlify Identity login handlers -->
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => document.location.href = "/admin/");
+        }
+      });
+    }
+    document.getElementById('loginBtn')?.addEventListener('click', () => window.netlifyIdentity.open('login'));
+    document.getElementById('registerBtn')?.addEventListener('click', () => window.netlifyIdentity.open('signup'));
+  </script>
+</body>
+</html>
